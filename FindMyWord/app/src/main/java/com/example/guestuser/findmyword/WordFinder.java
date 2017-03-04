@@ -53,5 +53,8 @@ public class WordFinder {
         categories = c.getNextCategories();
     }
 
+    private void getAllCategories(){
+
+    }
 
 }
