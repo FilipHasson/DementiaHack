@@ -1,6 +1,7 @@
 package com.example.guestuser.findmyword;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -77,6 +78,10 @@ public class WordFinder {
 
             //Get following categories
             categoriesNext = jsonObj.getString("Categories");
+
+            Log.d("debug_karol","categoryName:"+categoryName);
+            Log.d("debug_karol","categoryNext:"+categoryNext);
+            Log.d("debug_karol","words:"+words);
 
 
 
