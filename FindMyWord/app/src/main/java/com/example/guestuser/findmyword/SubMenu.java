@@ -9,7 +9,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     private static final String APP_NAME = "FindMyWord";
@@ -72,7 +71,8 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                     buttons[j].setText(category+"."+Integer.toString(j));
                     buttons[j].setLayoutParams(buttonParams);
                     buttons[j].setTag(buttons[j].getText());
-                    buttons[cButton].setOnClickListener(this);
+                    buttons[j].generateViewId();
+                    buttons[j].setOnClickListener(this);
                     horizontals[i].addView(buttons[j]);
                 }
                 cButton = cButton + 2;
@@ -82,13 +82,11 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        Log.d("Filip_debug_tag","onClick(View) called");
         Intent intent = new Intent(this,SubMenu.class);
-        Log.d("Filip_debug_tag","new Intent");
-        String name = ((TextView) v.findViewById(v.getId())).getText().toString();
-        Log.d("Filip_debug_tag","String Name");
+        Button b = (Button)v;
+        //Log.d("Filip_debug_tag",((TextView)v.findViewById(v.getId())).getText().toString());
+        String name = b.getText().toString();
         intent.putExtra(KEY_NAME,name);
-        Log.d("Filip_debug_tag","Starting Activity");
         startActivity(intent);
     }
 }

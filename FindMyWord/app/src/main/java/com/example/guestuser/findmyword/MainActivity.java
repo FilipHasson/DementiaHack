@@ -3,6 +3,7 @@ package com.example.guestuser.findmyword;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this,SubMenu.class);
+        Log.d("Filip_debug_tag",((TextView)v.findViewById(v.getId())).getText().toString());
         String name = ((TextView) v.findViewById(v.getId())).getText().toString();
         intent.putExtra(KEY_NAME,name);
         startActivity(intent);
