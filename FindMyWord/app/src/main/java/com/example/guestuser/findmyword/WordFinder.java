@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 
 public class WordFinder {
+    private String name;
     private Category curCategory;
     private ArrayList<Category> categories;
 
@@ -106,6 +107,14 @@ public class WordFinder {
             return null;
         }
         return json;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

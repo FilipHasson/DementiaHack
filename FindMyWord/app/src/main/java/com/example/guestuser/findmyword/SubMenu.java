@@ -12,32 +12,42 @@ import android.widget.LinearLayout;
 
 public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     private static final String APP_NAME = "FindMyWord";
+    private static final String DEBUG_TAG = "Filip_debug_tag";
     private static final boolean DEBUG_FLAG = false;
     private int numButtons = 7;
     private static final String KEY_NAME = "category";
+    private static final String WORD_FINDER = "word_finder";
+    private static WordFinder wf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Filip_debug_tag","onCreate Launched");
-        WordFinder wf = new WordFinder ();
+        Log.d(DEBUG_TAG,"onCreate Launched");
         int numRows = this.numButtons/2;
         int cButton = 0;
         LinearLayout layout;
         LinearLayout horizontals[];
-
+        Button buttons[];
         DisplayMetrics dm = getResources().getDisplayMetrics();
         float dpInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, dm);
+        String category = getIntent().getStringExtra("category");
 
-        Button buttons[];
+        //this.wf = (WordFinder) getIntent().getExtras().getParcelable(WORD_FINDER);
+        if (this.wf == null){
+            Log.d(DEBUG_TAG,"NULL WordFinder");
+            this.wf = new WordFinder();
+            this.wf.setName(category);
+        } else {
+            Log.d(DEBUG_TAG,this.wf.getName());
+        }
         if (numRows%2 != 0){
             numRows++;
         }
         horizontals = new LinearLayout[numRows];
         buttons = new Button[numButtons];
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_menu);
-        String category = getIntent().getStringExtra("category");
         setTitle(category);
         layout = (LinearLayout) findViewById(R.id.LinearLayoutVertical);
         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(0,Math.round(dpInPx),1);
@@ -87,6 +97,7 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         //Log.d("Filip_debug_tag",((TextView)v.findViewById(v.getId())).getText().toString());
         String name = b.getText().toString();
         intent.putExtra(KEY_NAME,name);
+        //intent.putExtra(WORD_FINDER,(Parcelable) this.wf);
         startActivity(intent);
     }
 }
