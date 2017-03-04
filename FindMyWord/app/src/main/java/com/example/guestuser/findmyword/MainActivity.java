@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String APP_NAME = "DailyFit";
+    private static final String APP_NAME = "FindMyWord";
     private static final boolean DEBUG_FLAG = false;
     private int numButtons = 8;
     private static final String KEY_NAME = "category";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
