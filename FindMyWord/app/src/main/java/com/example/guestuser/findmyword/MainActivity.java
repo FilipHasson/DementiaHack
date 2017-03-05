@@ -10,6 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.example.guestuser.findmyword.API.*;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String APP_NAME = "FindMyWord";
     private static final boolean DEBUG_FLAG = false;
@@ -17,8 +25,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String WORD_FINDER = "word_finder";
     private static final String DEBUG_TAG = "Filip_debug_tag";
 
+    private void getImages() {
+        FindMyWordAPIController controller = new FindMyWordAPIController();
+
+        //IMPORTANT
+        String searchQuery = "cat";
+
+        controller.searchImage("cat", new Callback<SearchData>() {
+
+            //Change these callbacks to add custom logic
+            @Override
+            public void onResponse(Call<SearchData> call, Response<SearchData> response) {
+                if(response.isSuccessful()) {
+                    Log.d("marc_tag","sweeter sound fam");
+
+                    //Do whatever you want with these items
+                    List<Item> items = response.body().getItems();
+
+                    Item firstResult = items.get(0);
+                    Log.d("api", firstResult.getImage().getContextLink().toString());
+
+                } else {
+                    Log.d("marc_tag", "failed" + response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchData> call, Throwable t) {
+                Log.d("marc_tag", "call failed");
+                t.printStackTrace();
+            }
+        });
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getImages();
+
         WordFinder wordFinder = new WordFinder(this);
         String categories[] = wordFinder.getNames();
         int numButtons = categories.length;
