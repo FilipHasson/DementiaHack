@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 horizontals[i].setBaselineAligned(false);
                 layout.addView(horizontals[i]);
                 this.buttons[buttonCount] = new Button(this);
-                this.buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                this.buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
                 this.buttons[buttonCount].setTextColor(Color.BLACK);
                 this.buttons[buttonCount].setText(categories[buttonCount]);
                 searchPhoto(categories[buttonCount]);
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                     this.buttons[j] = new Button(this);
-                    this.buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                    this.buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
                     this.buttons[j].setTextColor(Color.BLACK);
                     this.buttons[j].setText(categories[j]);
                     searchPhoto(categories[buttonCount]);

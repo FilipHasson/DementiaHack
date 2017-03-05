@@ -137,7 +137,7 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                 layout.addView(horizontals[i]);
                 buttons[buttonCount] = new Button(this);
                 buttons[buttonCount].setText(categories[buttonCount]);
-                buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
                 buttons[buttonCount].setTextColor(Color.BLACK);
                 searchPhoto(categories[buttonCount]);
                 buttons[buttonCount].setLayoutParams(buttonParams);
@@ -154,7 +154,7 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                     if (j == numButtons) break;
                     buttons[j] = new Button(this);
                     buttons[j].setText(categories[j]);
-                    buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                    buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
                     buttons[j].setTextColor(Color.BLACK);
                     searchPhoto(categories[buttonCount]);
                     buttons[j].setLayoutParams(buttonParams);

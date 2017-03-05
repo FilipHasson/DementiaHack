@@ -1,19 +1,15 @@
 package com.example.guestuser.findmyword;
 
+import android.content.Context;
 import android.util.Log;
-
-import com.example.guestuser.findmyword.API.FindMyWordAPIController;
-import com.example.guestuser.findmyword.API.WordResult;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Karol Zdebel on 2017-03-04.
@@ -21,11 +17,40 @@ import retrofit2.Response;
 
 public class WordsJson {
 
-    public WordsJson(){
+    public WordsJson(Context context){
+        this.context = context;
+        try{
+            wordsJson = new JSONObject(loadJSONFromAsset("words.json",context));
+        }catch(org.json.JSONException e){
+            wordsJson = null;
+            Log.d("debug_tag","Could not get file");
+            return;
+        }
+        leafs = new ArrayList<>();
         this.createJSONStructure();
         json = new JSONObject();
         this.json = this.createJson(jsonMain);
+        this.FillLeafWords(leafs);
+
+        Log.d("debug_tag","Final JSON File: "+json);
     }
+
+    private String loadJSONFromAsset(String name, Context context) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open(name);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
 
     class JSONCategory{
         ArrayList<JSONCategory> subcategories;
@@ -36,13 +61,54 @@ public class WordsJson {
             this.name = name;
         }
     }
-
+    private JSONObject wordsJson;
+    private Context context;
     private JSONCategory jsonMain;
     private JSONObject json;
+    private ArrayList<JSONObject> leafs;
     private JSONObject jsonUse;
 
     public JSONObject getJson(){
         return json;
+    }
+
+    public void FillLeafWords(ArrayList<JSONObject> o){
+        JSONObject jsonObj = wordsJson;
+
+        JSONArray jsonarr = null;
+        try{
+            jsonarr = jsonObj.getJSONArray("Words");
+        }catch(org.json.JSONException e){
+            Log.d("debug_karol","failed to get words from json");
+            return;
+        }
+
+        try{
+            for (int i=0;i<jsonarr.length();i++){
+                for (int j=0;j<o.size();j++){
+                    if (o.get(j).get("Name").equals(jsonarr.getJSONObject(i).getString("Name"))){
+                        o.get(j).put("Words",jsonarr.getJSONObject(i).getJSONArray("Words"));
+                        Log.d("debug_karol","JSON Leaf after parsing dictionary:"+o.get(j).toString());
+                    }
+                }
+            }
+        }catch(org.json.JSONException e){
+            Log.d("debug_karol","failed to get words from json");
+        }
+
+    }
+
+    private void writeToFile(String string){
+        String filename = "output.txt";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(string.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -67,50 +133,7 @@ public class WordsJson {
 
             //Leaf node, call query for words unless hard-coded
             else{
-
-                FindMyWordAPIController controller = new FindMyWordAPIController();
-                controller.searchWord(main.name, new Callback<List<WordResult>>() {
-                    @Override
-                    public void onResponse(Call<List<WordResult>> call, Response<List<WordResult>> response) {
-                        if (response.isSuccessful()) {
-                            //List of word results
-                            List<WordResult> wordResults = response.body();
-                            //Access first result and get word
-                            JSONArray arr = new JSONArray();
-
-                            Log.d("debug_karol","words length: "+wordResults.size());
-
-                            int wordNum;
-                            if (wordResults.size() < 6){
-                                wordNum = wordResults.size();
-                            }else{
-                                wordNum = 6;
-                            }
-
-                            for (int j=0;j<wordNum;j++){
-                                arr.put(wordResults.get(j).getWord());
-                                Log.d("debug_karol", "Got word: "+wordResults.get(j).getWord());
-                            }
-                            try{
-                                jsonObj.put("Words",arr);
-                                Log.d("debug_karol", "arrr here: "+jsonObj.toString());
-
-                            }catch(org.json.JSONException e){
-                                Log.d("debug_karol","Failed to add array");
-                            }
-                        }
-                        else {
-                            Log.d("debug_karol", "failed");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<WordResult>> call, Throwable t) {
-                        Log.d("debug_karol", "call failed");
-                        t.printStackTrace();
-                    }
-                });
-
+                leafs.add(jsonObj);
             }
 
         }catch(org.json.JSONException e){
@@ -119,7 +142,7 @@ public class WordsJson {
 
         Log.d("debug_karol","returning json obj: "+jsonObj);
 
-       return jsonObj;
+        return jsonObj;
 
     }
 
