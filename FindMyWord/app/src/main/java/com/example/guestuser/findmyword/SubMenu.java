@@ -42,6 +42,7 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         if (numRows%2 != 0){
             numRows++;
         }
+
         horizontals = new LinearLayout[numRows];
         buttons = new Button[numButtons];
 

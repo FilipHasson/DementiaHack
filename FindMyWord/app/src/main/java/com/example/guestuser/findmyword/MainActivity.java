@@ -14,20 +14,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int numButtons = 8;
     private static final String KEY_NAME = "category";
     private static final String WORD_FINDER = "word_finder";
+    private static final String DEBUG_TAG = "Filip_debug_tag";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WordFinder wordFinder = new WordFinder();
-        wordFinder.getAllCategories(this);
+//        WordFinder wordFinder = new WordFinder();
+//        wordFinder.getAllCategories(this);
+
+//        String categories[] = wordFinder.getNames();
+
+//        for (int i=0; i < categories.length; i++){
+//            Log.d(DEBUG_TAG,"NULL WordFinder");
+//        }
 
         setContentView(R.layout.activity_main);
         for (int i = 1; i <= numButtons; i++) {
             (findViewById(getResources().getIdentifier("Button" + i, "id",this.getPackageName()))).setOnClickListener(this);
         }
-
     }
 
     @Override
