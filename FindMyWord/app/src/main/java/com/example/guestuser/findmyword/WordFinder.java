@@ -28,10 +28,10 @@ public class WordFinder {
         curCategory = null;
         categories = null;
         this.context = context;
-        wordsJson = new WordsJson();
-        JSONObject json = wordsJson.getJson();
-        Log.d("debug_karol","Here is the json:"+json.toString());
-        this.getAllCategories(json);
+        //wordsJson = new WordsJson();
+        //JSONObject json = wordsJson.getJson();
+       // Log.d("debug_karol","Here is the json:"+json.toString());
+        this.getAllCategories();
         mainCategories = categories;
     }
 
@@ -154,7 +154,7 @@ public class WordFinder {
     }
 
     //get all categories
-    public void getAllCategories(JSONObject jsonObj){
+    public void getAllCategories(){
         String words[];  //If it's a leaf category, words are stored here
         JSONArray categoriesNext; //Categories following category parsed
         String categoryName;  //Name of current category
@@ -162,7 +162,7 @@ public class WordFinder {
         ArrayList<Category> allCategories = new ArrayList<>();
 
         try{
-            //JSONObject jsonObj = new JSONObject(loadJSONFromAsset("data.JSON",context));
+            JSONObject jsonObj = new JSONObject(loadJSONFromAsset("data.JSON",context));
             Log.d("debug_karol","Loaded JSON object");
             JSONArray jsonArr = jsonObj.getJSONArray("all");
             Log.d("debug_karol","Got JSON array, length:"+jsonArr.length());
