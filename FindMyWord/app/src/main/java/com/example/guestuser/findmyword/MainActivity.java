@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.example.guestuser.findmyword.API.APIDemo;
 import com.example.guestuser.findmyword.API.FindMyWordAPIController;
 import com.example.guestuser.findmyword.API.Item;
 import com.example.guestuser.findmyword.API.SearchData;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buttons[];
     String categories[];
 
-    public static Drawable drawableFromUrl(String url) throws IOException {
+      public static Drawable drawableFromUrl(String url) throws IOException {
         Bitmap x;
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -98,7 +99,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //getImages();
+
+        APIDemo demo = new APIDemo();
+        demo.searchWord("fire");
+
+
         WordFinder wordFinder = new WordFinder(this);
         categories = wordFinder.getNames();
         int numButtons = categories.length;
