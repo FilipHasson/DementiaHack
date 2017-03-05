@@ -14,21 +14,23 @@ import retrofit2.Response;
 
 public class APIDemo {
 
-    public void test(String searchQuery) {
+    public void searchPhoto(String searchQuery) {
 
         FindMyWordAPIController controller = new FindMyWordAPIController();
-        controller.searchWord(searchQuery, new Callback<List<WordResult>>() {
+        controller.searchPhotos(searchQuery, new Callback<PhotoResult>() {
             @Override
-            public void onResponse(Call<List<WordResult>> call, Response<List<WordResult>> response) {
+            public void onResponse(Call<PhotoResult> call, Response<PhotoResult> response) {
                 if (response.isSuccessful()) {
-                    //List of word results
-                    List<WordResult> wordResults = response.body();
-                    //Access first result and get word
 
-                    for(WordResult wordResult : wordResults) {
-                        Log.d("marc_tag", wordResult.getWord());
+                    List<Photo> photoList = response.body().getPhotos().getPhoto();
+
+                    //iterate through all photos
+                    for(Photo photo : photoList) {
+                        Log.d("marc_tag", photo.toUrl());
                     }
 
+                    //or you can get only first photo
+                    String firstPhotoURL = photoList.get(0).toUrl();
 
                 }
                 else {
@@ -37,11 +39,11 @@ public class APIDemo {
             }
 
             @Override
-            public void onFailure(Call<List<WordResult>> call, Throwable t) {
-                Log.d("marc_tag", "call failed");
-                t.printStackTrace();
+            public void onFailure(Call<PhotoResult> call, Throwable t) {
+                Log.d("marc_tag", "search photo fail");
             }
         });
+
     }
 
     public void searchWord(String searchQuery) {
