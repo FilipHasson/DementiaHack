@@ -184,6 +184,15 @@ public class WordFinder {
         return json;
     }
 
+    public String[] getWords(String category){
+        for (Category c: curCategory.getNextCategories()){
+            if (c.getName().equals(category)){
+                return c.getWords();
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }
