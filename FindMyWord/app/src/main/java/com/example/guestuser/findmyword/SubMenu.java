@@ -1,6 +1,7 @@
 package com.example.guestuser.findmyword;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -17,13 +18,44 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     private static final String KEY_NAME = "category";
     private static final String WORD_FINDER = "word_finder";
     private static WordFinder wf;
+    private int colorInt =0;
+
+    private int getPictureOrColor(String category){
+        String uri = "drawable/"+category.toLowerCase();
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        if (imageResource == 0){
+            String color = "red";
+            if (colorInt == 0) colorInt = 1;
+            switch (colorInt){
+                case 1:
+                    color = "red";
+                    colorInt++;
+                    break;
+                case 2:
+                    color = "blue";
+                    colorInt++;
+                    break;
+                case 3:
+                    color = "yellow";
+                    colorInt++;
+                    break;
+                case 4:
+                    color = "green";
+                    colorInt = 1;
+                    break;
+            }
+            uri = "drawable/"+color;
+            imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        }
+        return imageResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(DEBUG_TAG,"onCreate Launched");
         boolean terminal_node = false;
         int numButtons;
-        int numRows;// = this.numButtons/2;
+        int numRows;
         int buttonCount = 0;
         LinearLayout layout;
         LinearLayout horizontals[];
@@ -42,7 +74,6 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         }
         this.wf.selectCategory(category);
         if(this.wf.hasNextCategories()) {
-            //this.wf.selectCategory(category);
             categories = this.wf.getNames();
         } else {
             if (this.wf.hasWords()){
@@ -56,14 +87,12 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         }
         numButtons = categories.length;
         numRows = numButtons/2;
-
         if (numRows%2 != 0){
             numRows++;
         }
 
         horizontals = new LinearLayout[numRows];
         buttons = new Button[numButtons];
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub_menu);
@@ -74,7 +103,6 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                 LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
 
         for (int i = 0; i < numRows; i++){
-            Log.d(DEBUG_TAG,"Creating Row #"+Integer.toString(i));
             if (numButtons%2 != 0 && i == numRows-1){
                 horizontals[i] = new LinearLayout(this);
                 horizontals[i].setOrientation(LinearLayout.HORIZONTAL);
@@ -82,9 +110,11 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                 layout.addView(horizontals[i]);
                 buttons[buttonCount] = new Button(this);
                 buttons[buttonCount].setText(categories[buttonCount]);
+                buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                buttons[buttonCount].setTextColor(Color.WHITE);
+                buttons[buttonCount].setBackgroundResource(getPictureOrColor(categories[buttonCount]));
                 buttons[buttonCount].setLayoutParams(buttonParams);
-                if (!terminal_node)
-                    buttons[buttonCount].setOnClickListener(this);
+                if (!terminal_node) buttons[buttonCount].setOnClickListener(this);
                 horizontals[i].addView(buttons[buttonCount]);
             } else {
                 horizontals[i] = new LinearLayout(this);
@@ -93,18 +123,16 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                 layout.addView(horizontals[i]);
                 int test = buttonCount+1;
                 for (int j=buttonCount; j <= test ;j++) {
-                    Log.d(DEBUG_TAG,"Attempting to add Button #"+Integer.toString(j));
-                    if (j == numButtons){
-                        Log.d(DEBUG_TAG,"Breaking");
-                        break;
-                    }
+                    if (j == numButtons) break;
                     buttons[j] = new Button(this);
                     buttons[j].setText(categories[j]);
+                    buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                    buttons[j].setTextColor(Color.WHITE);
+                    buttons[j].setBackgroundResource(getPictureOrColor(categories[buttonCount]));
                     buttons[j].setLayoutParams(buttonParams);
                     buttons[j].setTag(buttons[j].getText());
                     buttons[j].generateViewId();
-                    if (!terminal_node)
-                        buttons[j].setOnClickListener(this);
+                    if (!terminal_node) buttons[j].setOnClickListener(this);
                     horizontals[i].addView(buttons[j]);
                     buttonCount++;
                 }

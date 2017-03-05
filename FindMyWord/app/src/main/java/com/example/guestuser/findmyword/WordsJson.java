@@ -67,7 +67,6 @@ public class WordsJson {
 
             //Leaf node, call query for words unless hard-coded
             else{
-                //query call
 
                 FindMyWordAPIController controller = new FindMyWordAPIController();
                 controller.searchWord(main.name, new Callback<List<WordResult>>() {

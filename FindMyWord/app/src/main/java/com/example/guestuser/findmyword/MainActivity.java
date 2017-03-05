@@ -3,6 +3,7 @@ package com.example.guestuser.findmyword;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.example.guestuser.findmyword.API.APIDemo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        APIDemo demo = new APIDemo();
+        demo.searchPhoto("horse");
 
         WordFinder wordFinder = new WordFinder(this);
         categories = wordFinder.getNames();
@@ -82,8 +87,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 horizontals[i].setLayoutParams(linearParams);
                 layout.addView(horizontals[i]);
                 this.buttons[buttonCount] = new Button(this);
+                this.buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                this.buttons[buttonCount].setTextColor(Color.WHITE);
                 this.buttons[buttonCount].setText(categories[buttonCount]);
-                Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(buttonCount));
+                String uri = "drawable/"+categories[buttonCount].toLowerCase();
+                int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                this.buttons[buttonCount].setBackgroundResource(imageResource);//                Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(buttonCount));
+//                getImages(categories[buttonCount]);
                 this.buttons[buttonCount].setLayoutParams(buttonParams);
                 this.buttons[buttonCount].setOnClickListener(this);
                 horizontals[i].addView(this.buttons[buttonCount]);
@@ -100,7 +110,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                     this.buttons[j] = new Button(this);
+                    this.buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                    this.buttons[j].setTextColor(Color.WHITE);
                     this.buttons[j].setText(categories[j]);
+                    String uri = "drawable/"+categories[j].toLowerCase();
+                    int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                    this.buttons[j].setBackgroundResource(imageResource);
 //                    Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(j));
 //                    getImages(categories[j]);
                     this.buttons[j].setLayoutParams(buttonParams);
