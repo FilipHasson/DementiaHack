@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 1; i <= numButtons; i++) {
             (findViewById(getResources().getIdentifier("Button" + i, "id",this.getPackageName()))).setOnClickListener(this);
         }
+
     }
 
     @Override
