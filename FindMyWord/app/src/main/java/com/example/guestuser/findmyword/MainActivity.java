@@ -3,6 +3,7 @@ package com.example.guestuser.findmyword;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buttons[];
     String categories[];
 
-      public static Drawable drawableFromUrl(String url) throws IOException {
+    public static Drawable drawableFromUrl(String url) throws IOException {
         Bitmap x;
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -86,7 +87,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 horizontals[i].setLayoutParams(linearParams);
                 layout.addView(horizontals[i]);
                 this.buttons[buttonCount] = new Button(this);
+                this.buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                this.buttons[buttonCount].setTextColor(Color.BLACK);
                 this.buttons[buttonCount].setText(categories[buttonCount]);
+                String uri = "drawable/"+categories[buttonCount].toLowerCase();
+                int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                this.buttons[buttonCount].setBackgroundResource(imageResource);
+                buttons[buttonCount].getBackground().setAlpha(85);
 //                Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(buttonCount));
 //                getImages(categories[buttonCount]);
                 this.buttons[buttonCount].setLayoutParams(buttonParams);
@@ -105,7 +112,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         break;
                     }
                     this.buttons[j] = new Button(this);
+                    this.buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+                    this.buttons[j].setTextColor(Color.BLACK);
                     this.buttons[j].setText(categories[j]);
+                    String uri = "drawable/"+categories[j].toLowerCase();
+                    int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                    this.buttons[j].setBackgroundResource(imageResource);
+                    buttons[j].getBackground().setAlpha(85);
 //                    Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(j));
 //                    getImages(categories[j]);
                     this.buttons[j].setLayoutParams(buttonParams);
