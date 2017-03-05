@@ -62,12 +62,14 @@ public class WordFinder {
 
     //Do more categories exist
     public boolean hasNextCategories(){
+        if (curCategory==null){ return true; }
         return !(curCategory.getNextCategories()== null);
     }
 
     //If this is a top-most category
     public boolean hasPrevCategories(){
-       return !(curCategory.getPrevCategory() == null);
+        if (curCategory==null){ return false; }
+        return !(curCategory.getPrevCategory() == null);
     }
 
     //Go to previous category set
