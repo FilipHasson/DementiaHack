@@ -62,7 +62,6 @@ public class FindMyWordAPIController {
         FindMyWordAPI api = retrofit.create(FindMyWordAPI.class);
 
         Call<List<WordResult>> call = api.getRelatedWords(word);
-
         call.enqueue(callback);
     }
 

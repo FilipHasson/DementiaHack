@@ -1,0 +1,89 @@
+{
+  "all": [
+    {
+      "Name": "Food",
+      "Categories": [
+        {
+          "Name": "Fruits",
+          "Words": [
+            "Apple",
+            "Banana",
+            "Orange",
+            "Lemon",
+            "Grape",
+            "Pair"
+          ]
+        },
+        {
+          "Name": "Vegetables",
+          "Words": [
+            "Onion",
+            "Potato",
+            "Carrot",
+            "Lettuce",
+            "Avocado",
+            "Pepper"
+          ]
+        },
+        {
+          "Name": "Pasta",
+          "Words": [
+            "Spaghetti",
+            "Linguini",
+            "Fettucini",
+            "Ravioli"
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Places",
+      "Words": [
+        "New York",
+        "Toronto",
+        "Ottawa",
+        "Montreal",
+        "Chicago"
+      ]
+    },
+    {
+      "Name": "Home",
+      "Words": [
+        "Fridge",
+        "Oven",
+        "Microwave",
+        "Sink",
+        "Dishwasher",
+        "Table"
+      ]
+    },
+    {
+      "Name": "Countries",
+      "Words": [
+        "Canada",
+        "United States",
+        "Norway",
+        "Poland",
+        "China",
+        "Sweden"
+      ]
+    },
+    {
+      "Name": "Activities",
+      "Words": [
+        "Running",
+        "Swimming",
+        "Walking"
+      ]
+    },
+    {
+      "Name": "Electronics",
+      "Words": [
+        "Phone",
+        "Television",
+        "Tablet",
+        "Computer"
+      ]
+    }
+  ]
+}

@@ -21,11 +21,16 @@ public class WordFinder {
     private static ArrayList<Category> mainCategories;
     private Context context;
 
+    private WordsJson wordsJson;
+
     //Initialize WordFinder object
     public WordFinder(Context context){
         curCategory = null;
         categories = null;
         this.context = context;
+        //wordsJson = new WordsJson();
+        //JSONObject json = wordsJson.getJson();
+       // Log.d("debug_karol","Here is the json:"+json.toString());
         this.getAllCategories();
         mainCategories = categories;
     }

@@ -1,6 +1,19 @@
 package com.example.guestuser.findmyword;
 
+import android.util.Log;
+
+import com.example.guestuser.findmyword.API.FindMyWordAPIController;
+import com.example.guestuser.findmyword.API.WordResult;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Karol Zdebel on 2017-03-04.
@@ -8,25 +21,126 @@ import java.util.ArrayList;
 
 public class WordsJson {
 
+    public WordsJson(){
+        this.createJSONStructure();
+        json = new JSONObject();
+        this.json = this.createJson(jsonMain);
+    }
+
     class JSONCategory{
         ArrayList<JSONCategory> subcategories;
         String name;
 
         public JSONCategory(String name){
+            subcategories = new ArrayList<>();
             this.name = name;
         }
     }
 
-    public void getJSON(){
+    private JSONCategory jsonMain;
+    private JSONObject json;
+    private JSONObject jsonUse;
+
+    public JSONObject getJson(){
+        return json;
+    }
+
+
+    private JSONObject createJson(JSONCategory main){
+        final JSONObject jsonObj = new JSONObject();
+
+        try{
+            //Insert name
+            jsonObj.put("Name",main.name);
+
+            //Check to see if categories exist if so recursive call
+
+            Log.d("debug_karol","Size: "+main.subcategories.size());
+            if (main.subcategories.size() > 0){
+                JSONArray arr = new JSONArray();
+                for (int i=0;i<main.subcategories.size();i++){
+                    arr.put(createJson(main.subcategories.get(i)));
+                }
+                jsonObj.put("Categories",arr);
+                Log.d("debug_karol","112: "+jsonObj.toString());
+            }
+
+            //Leaf node, call query for words unless hard-coded
+            else{
+
+                FindMyWordAPIController controller = new FindMyWordAPIController();
+                controller.searchWord(main.name, new Callback<List<WordResult>>() {
+                    @Override
+                    public void onResponse(Call<List<WordResult>> call, Response<List<WordResult>> response) {
+                        if (response.isSuccessful()) {
+                            //List of word results
+                            List<WordResult> wordResults = response.body();
+                            //Access first result and get word
+                            JSONArray arr = new JSONArray();
+
+                            Log.d("debug_karol","words length: "+wordResults.size());
+
+                            int wordNum;
+                            if (wordResults.size() < 6){
+                                wordNum = wordResults.size();
+                            }else{
+                                wordNum = 6;
+                            }
+
+                            for (int j=0;j<wordNum;j++){
+                                arr.put(wordResults.get(j).getWord());
+                                Log.d("debug_karol", "Got word: "+wordResults.get(j).getWord());
+                            }
+                            try{
+                                jsonObj.put("Words",arr);
+                                Log.d("debug_karol", "arrr here: "+jsonObj.toString());
+
+                            }catch(org.json.JSONException e){
+                                Log.d("debug_karol","Failed to add array");
+                            }
+                        }
+                        else {
+                            Log.d("debug_karol", "failed");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<WordResult>> call, Throwable t) {
+                        Log.d("debug_karol", "call failed");
+                        t.printStackTrace();
+                    }
+                });
+
+            }
+
+        }catch(org.json.JSONException e){
+            Log.d("debug_karol","Error inputing json");
+        }
+
+        Log.d("debug_karol","returning json obj: "+jsonObj);
+
+       return jsonObj;
+
+    }
+
+    private void createJSONStructure(){
 
         /*Main categories*/
-        JSONCategory jsonMain = new JSONCategory("All");
+        jsonMain = new JSONCategory("All");
         JSONCategory clothes = new JSONCategory("Clothes");
         JSONCategory activities = new JSONCategory("Activities");
         JSONCategory food = new JSONCategory("Food");
         JSONCategory places = new JSONCategory("Places");
         JSONCategory feelings = new JSONCategory("Feelings");
         JSONCategory people = new JSONCategory("People");
+
+        /*Add main categories to jsonMain*/
+        jsonMain.subcategories.add(clothes);
+        jsonMain.subcategories.add(activities);
+        jsonMain.subcategories.add(food);
+        jsonMain.subcategories.add(places);
+        jsonMain.subcategories.add(feelings);
+        jsonMain.subcategories.add(people);
 
         /*Home categories*/
         JSONCategory kitchen = new JSONCategory("Kitchen");

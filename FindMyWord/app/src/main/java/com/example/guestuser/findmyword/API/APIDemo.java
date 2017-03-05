@@ -55,11 +55,9 @@ public class APIDemo {
                 if (response.isSuccessful()) {
                     //List of word results
                     List<WordResult> wordResults = response.body();
-
-                    for(WordResult wordResult : wordResults) {
-                        Log.d("marc_tag", wordResult.getWord());
-                    }
-
+                    //Access first result and get word
+                    String word = wordResults.get(0).getWord().toString();
+                    Log.d("marc_tag", word);
                 }
                 else {
                     Log.d("marc_tag", "failed");
