@@ -17,91 +17,100 @@
             android:id="@+id/LinearLayoutVertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/LinearLayoutHorizontal01"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                android:layout_height="fill_parent">
 
                 <Button
                     android:id="@+id/Button1"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="Home"></Button>
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/home"
+                    android:text="@string/homeButton"/>
 
                 <Button
                     android:id="@+id/Button2"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="Food"></Button>
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/food"
+                    android:text="@string/foodButton"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/LinearLayoutHorizontal02"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/Button3"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="Places"></Button>
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/places"
+                    android:text="@string/placesButton"/>
 
                 <Button
                     android:id="@+id/Button4"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="Countries"></Button>
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/clothes"
+                    android:text="@string/clothesButton"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/LinearLayoutHorizontal03"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/Button5"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="Clothes"></Button>
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/countries"
+                    android:text="@string/countriesButton"/>
 
                 <Button
                     android:id="@+id/Button6"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="TEST2"></Button>
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/red"
+                    android:text="@string/test2Button"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/LinearLayout05"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
+                android:layout_height="wrap_content">
 
                 <Button
                     android:id="@+id/Button7"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="TEST3"></Button>
+                    android:textColor="#000000"
+                    android:background="@drawable/yellow"
+                    android:text="@string/test3Button"/>
 
                 <Button
                     android:id="@+id/Button8"
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
-                    android:text="TEST4"></Button>
+                    android:textColor="#000000"
+                    android:background="@drawable/green"
+                    android:text="@string/test4Button"/>
             </LinearLayout>
         </LinearLayout>
-
-
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

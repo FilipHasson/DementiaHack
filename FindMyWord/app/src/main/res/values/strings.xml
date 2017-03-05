@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FindMyWord</string>
+    <string name="homeButton">Home</string>
+    <string name="foodButton">Food</string>
+    <string name="placesButton">Places</string>
+    <string name="countriesButton">Countries</string>
+    <string name="clothesButton">Clothes</string>
+    <string name="test2Button">TEST2</string>
+    <string name="test3Button">TEST3</string>
+    <string name="test4Button">TEST4</string>
 </resources>
