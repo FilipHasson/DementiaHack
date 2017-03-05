@@ -14,14 +14,24 @@ import retrofit2.Response;
 
 public class APIDemo {
 
-    public void searchImage(String searchQuery) {
+    public void searchPhoto(String searchQuery) {
 
         FindMyWordAPIController controller = new FindMyWordAPIController();
-        controller.searchImage(searchQuery, new Callback<SearchData>() {
+        controller.searchPhotos(searchQuery, new Callback<PhotoResult>() {
             @Override
-            public void onResponse(Call<SearchData> call, Response<SearchData> response) {
+            public void onResponse(Call<PhotoResult> call, Response<PhotoResult> response) {
                 if (response.isSuccessful()) {
-                    Log.d("marc_tag", "lets go baby");
+
+                    List<Photo> photoList = response.body().getPhotos().getPhoto();
+
+                    //iterate through all photos
+                    for(Photo photo : photoList) {
+                        Log.d("marc_tag", photo.toUrl());
+                    }
+
+                    //or you can get only first photo
+                    String firstPhotoURL = photoList.get(0).toUrl();
+
                 }
                 else {
                     Log.d("marc_tag", "failed");
@@ -29,8 +39,8 @@ public class APIDemo {
             }
 
             @Override
-            public void onFailure(Call<SearchData> call, Throwable t) {
-                t.printStackTrace();
+            public void onFailure(Call<PhotoResult> call, Throwable t) {
+                Log.d("marc_tag", "search photo fail");
             }
         });
 
@@ -45,9 +55,11 @@ public class APIDemo {
                 if (response.isSuccessful()) {
                     //List of word results
                     List<WordResult> wordResults = response.body();
-                    //Access first result and get word
-                    String word = wordResults.get(0).getWord().toString();
-                    Log.d("marc_tag", word);
+
+                    for(WordResult wordResult : wordResults) {
+                        Log.d("marc_tag", wordResult.getWord());
+                    }
+
                 }
                 else {
                     Log.d("marc_tag", "failed");

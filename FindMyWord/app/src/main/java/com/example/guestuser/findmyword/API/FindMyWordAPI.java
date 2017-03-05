@@ -21,8 +21,10 @@ public interface FindMyWordAPI {
 //            @Query("searchType") String searchType
 //    );
 
-    @GET("")
+    @GET("services/rest/")
     Call<PhotoResult> getPhotos(
+        @Query("method") String method,
+        @Query("api_key") String api_key,
         @Query("text") String text,
         @Query("sort") String sort,
         @Query("safe_search") String safe_search,
