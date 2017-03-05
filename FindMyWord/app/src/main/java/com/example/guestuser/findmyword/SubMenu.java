@@ -21,6 +21,7 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(DEBUG_TAG,"onCreate Launched");
+        boolean terminal_node = false;
         int numButtons;
         int numRows;// = this.numButtons/2;
         int buttonCount = 0;
@@ -39,18 +40,19 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         } else {
             Log.d(DEBUG_TAG,this.wf.getName());
         }
-
+        this.wf.selectCategory(category);
         if(this.wf.hasNextCategories()) {
-            this.wf.selectCategory(category);
+            //this.wf.selectCategory(category);
             categories = this.wf.getNames();
-        } else if (this.wf.hasWords()){
-            categories = this.wf.getWords(category);
-           // categories = this.wf.getNames();
         } else {
-            //shit goes crazy
-            categories = new String[0];
-            categories[0]="THIS SHOULD NEVER HAPPEN!";
-            Log.d(DEBUG_TAG,categories[0]);
+            if (this.wf.hasWords()){
+                terminal_node=true;
+                categories=this.wf.getWords();
+            } else {
+                categories = new String[1];
+                categories[0]="This should not happen";
+                Log.d(DEBUG_TAG,categories[0]);
+            }
         }
         numButtons = categories.length;
         numRows = numButtons/2;
@@ -81,7 +83,8 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                 buttons[buttonCount] = new Button(this);
                 buttons[buttonCount].setText(categories[buttonCount]);
                 buttons[buttonCount].setLayoutParams(buttonParams);
-                buttons[buttonCount].setOnClickListener(this);
+                if (!terminal_node)
+                    buttons[buttonCount].setOnClickListener(this);
                 horizontals[i].addView(buttons[buttonCount]);
             } else {
                 horizontals[i] = new LinearLayout(this);
@@ -100,12 +103,19 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                     buttons[j].setLayoutParams(buttonParams);
                     buttons[j].setTag(buttons[j].getText());
                     buttons[j].generateViewId();
-                    buttons[j].setOnClickListener(this);
+                    if (!terminal_node)
+                        buttons[j].setOnClickListener(this);
                     horizontals[i].addView(buttons[j]);
                     buttonCount++;
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.wf.goBack();
     }
 
     @Override

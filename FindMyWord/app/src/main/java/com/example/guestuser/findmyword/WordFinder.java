@@ -18,6 +18,7 @@ public class WordFinder {
     private String name;
     private Category curCategory;
     private ArrayList<Category> categories;
+    private static ArrayList<Category> mainCategories;
     private Context context;
 
     //Initialize WordFinder object
@@ -26,6 +27,7 @@ public class WordFinder {
         categories = null;
         this.context = context;
         this.getAllCategories();
+        mainCategories = categories;
     }
 
     public WordFinder(Category curCategory){
@@ -57,6 +59,9 @@ public class WordFinder {
 
     //Are words being displayed instead of categories
     public boolean hasWords(){
+        if (curCategory == null) {
+            return false;
+        }
         return curCategory.hasWords();
     }
 
@@ -75,7 +80,11 @@ public class WordFinder {
     //Go to previous category set
     public void goBack(){
         curCategory = curCategory.getPrevCategory();
-        categories = curCategory.getNextCategories();
+        if (curCategory == null){
+            categories=mainCategories;
+        }else{
+            categories = curCategory.getNextCategories();
+        }
     }
 
     //Set category and the following categories afterwards
@@ -186,13 +195,8 @@ public class WordFinder {
         return json;
     }
 
-    public String[] getWords(String category){
-        for (Category c: curCategory.getNextCategories()){
-            if (c.getName().equals(category)){
-                return c.getWords();
-            }
-        }
-        return null;
+    public String[] getWords(){
+        return curCategory.getWords();
     }
 
     public String getName() {
