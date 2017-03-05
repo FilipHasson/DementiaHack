@@ -21,14 +21,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        WordFinder wordFinder = new WordFinder();
-//        wordFinder.getAllCategories(this);
+        WordFinder wordFinder = new WordFinder(this);
+        String categories[] = wordFinder.getNames();
 
-//        String categories[] = wordFinder.getNames();
+        for (int i=0; i < categories.length; i++){
+            Log.d(DEBUG_TAG,categories[i]);
+        }
 
-//        for (int i=0; i < categories.length; i++){
-//            Log.d(DEBUG_TAG,"NULL WordFinder");
-//        }
 
         setContentView(R.layout.activity_main);
         for (int i = 1; i <= numButtons; i++) {
