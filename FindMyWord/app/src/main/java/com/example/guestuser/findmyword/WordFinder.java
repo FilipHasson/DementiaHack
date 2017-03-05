@@ -3,6 +3,7 @@ package com.example.guestuser.findmyword;
 import android.content.Context;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -60,35 +61,85 @@ public class WordFinder {
         categories = c.getNextCategories();
     }
 
+    private Category getCategories(JSONObject jsonObj){
+        Category curCategory = new Category();
+        ArrayList<Category> nextCategories = new ArrayList<>();
+        String curCatName;
+        String[] words;
+
+        //Get and set name
+        try{
+            curCatName = jsonObj.getString("Name");
+            Log.d("debug_karol","Parsed Name:"+curCatName);
+            curCategory.setName(curCatName);
+        }catch(org.json.JSONException e){
+            Log.d("debug_karol","Could not parse name");
+            return null;
+        }
+
+
+        //Get words
+        JSONArray wordsArr=null;
+        try{
+            wordsArr = jsonObj.getJSONArray("Words");
+            Log.d("debug_karol","Parsed Words");
+
+            //Store words
+            words = new String[wordsArr.length()];
+            for (int j=0;j<wordsArr.length();j++){
+                words[j] = wordsArr.getString(j);
+            }
+            curCategory.setWords(words);
+
+        }catch(org.json.JSONException e) {
+            Log.d("debug_karol", "Could not parse words");
+            words = null;
+        }
+
+        //Get following categories recursively
+        JSONArray categoriesNext;
+        try{
+
+            categoriesNext = jsonObj.getJSONArray("Categories");
+
+            for (int i=0;i<categoriesNext.length();i++){
+                Log.d("debug_karol","Getting category next for: "+categoriesNext.getString(i));
+                nextCategories.add(getCategories(categoriesNext.getJSONObject(i)));
+            }
+            curCategory.setNextCategories(nextCategories);
+            Log.d("debug_karol","Parsed Category");
+            return curCategory;
+
+        }catch(org.json.JSONException e){
+            Log.d("debug_karol","Reached end");
+            return curCategory;
+        }
+    }
+
     //get all categories
     public ArrayList<Category> getAllCategories(Context context){
-        String words;  //If it's a leaf category, words are stored here
-        String categoriesNext; //Categories following category parsed
+        String words[];  //If it's a leaf category, words are stored here
+        JSONArray categoriesNext; //Categories following category parsed
         String categoryName;  //Name of current category
+        Category curCategory = new Category();
         ArrayList<Category> allCategories = new ArrayList<>();
 
         try{
             JSONObject jsonObj = new JSONObject(loadJSONFromAsset("data.JSON",context));
+            Log.d("debug_karol","Loaded JSON object");
+            JSONArray jsonArr = jsonObj.getJSONArray("all");
+            Log.d("debug_karol","Got JSON array, length:"+jsonArr.length());
 
-            //Get Name
-            categoryName = jsonObj.getString("Name");
+            for (int i=0;i<jsonArr.length();i++){
+                allCategories.add(getCategories(jsonArr.getJSONObject(i)));
+            }
 
-            //Get words
-            words = jsonObj.getString("Words");
-
-            //Get following categories
-            categoriesNext = jsonObj.getString("Categories");
-
-            Log.d("debug_karol","categoryName:"+categoryName);
-            Log.d("debug_karol","categoryNext:"+categoriesNext);
-            Log.d("debug_karol","words:"+words);
-
-
+            return allCategories;
 
         }catch(org.json.JSONException e) {
+            Log.d("debug_karol","JSONEXCEPTION");
             return null;
         }
-        return allCategories;
     }
 
     //Load json file and return it as string
