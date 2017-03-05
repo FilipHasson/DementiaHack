@@ -27,7 +27,8 @@ public interface FindMyWordAPI {
 
     @GET("words")
     Call<List<WordResult>> getRelatedWords(
-            @Query("ml") String relatedTo
+            @Query("ml") String relatedTo,
+            @Query("max") String maxStr
     );
 
 }
