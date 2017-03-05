@@ -14,23 +14,21 @@ import retrofit2.Response;
 
 public class APIDemo {
 
-    public void searchPhoto(String searchQuery) {
+    public void test(String searchQuery) {
 
         FindMyWordAPIController controller = new FindMyWordAPIController();
-        controller.searchPhotos(searchQuery, new Callback<PhotoResult>() {
+        controller.searchWord(searchQuery, new Callback<List<WordResult>>() {
             @Override
-            public void onResponse(Call<PhotoResult> call, Response<PhotoResult> response) {
+            public void onResponse(Call<List<WordResult>> call, Response<List<WordResult>> response) {
                 if (response.isSuccessful()) {
+                    //List of word results
+                    List<WordResult> wordResults = response.body();
+                    //Access first result and get word
 
-                    List<Photo> photoList = response.body().getPhotos().getPhoto();
-
-                    //iterate through all photos
-                    for(Photo photo : photoList) {
-                        Log.d("marc_tag", photo.toUrl());
+                    for(WordResult wordResult : wordResults) {
+                        Log.d("marc_tag", wordResult.getWord());
                     }
 
-                    //or you can get only first photo
-                    String firstPhotoURL = photoList.get(0).toUrl();
 
                 }
                 else {
@@ -39,11 +37,11 @@ public class APIDemo {
             }
 
             @Override
-            public void onFailure(Call<PhotoResult> call, Throwable t) {
-                Log.d("marc_tag", "search photo fail");
+            public void onFailure(Call<List<WordResult>> call, Throwable t) {
+                Log.d("marc_tag", "call failed");
+                t.printStackTrace();
             }
         });
-
     }
 
     public void searchWord(String searchQuery) {
@@ -55,11 +53,9 @@ public class APIDemo {
                 if (response.isSuccessful()) {
                     //List of word results
                     List<WordResult> wordResults = response.body();
-
-                    for(WordResult wordResult : wordResults) {
-                        Log.d("marc_tag", wordResult.getWord());
-                    }
-
+                    //Access first result and get word
+                    String word = wordResults.get(0).getWord().toString();
+                    Log.d("marc_tag", word);
                 }
                 else {
                     Log.d("marc_tag", "failed");
