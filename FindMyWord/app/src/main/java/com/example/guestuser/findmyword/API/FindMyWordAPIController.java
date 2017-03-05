@@ -15,11 +15,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class FindMyWordAPIController {
 
     static final String IMAGES_BASE_URL = "https://www.googleapis.com/customsearch/";
+    static final String
     static final String WORDS_BASE_URL = "https://api.datamuse.com";
     static final String apiKey = "AIzaSyAfLh4FzlRPOlo1lUkPYXMxikrZJ290bc4";
     static final String searchengineKey = "009590346671647894435:g6po9lguowi";
     static final String format = "json";
     static final String searchType = "image";
+
+    public void searchImage
 
     public void searchImage(String searchQuery, Callback<SearchData> callback) {
 
