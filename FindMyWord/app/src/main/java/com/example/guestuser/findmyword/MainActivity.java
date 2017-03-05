@@ -1,6 +1,10 @@
 package com.example.guestuser.findmyword;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -10,8 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.guestuser.findmyword.API.*;
+import com.example.guestuser.findmyword.API.FindMyWordAPIController;
+import com.example.guestuser.findmyword.API.Item;
+import com.example.guestuser.findmyword.API.SearchData;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,13 +35,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String WORD_FINDER = "word_finder";
     private static final String DEBUG_TAG = "Filip_debug_tag";
 
-    private void getImages() {
+    Button buttons[];
+    String categories[];
+
+    public static Drawable drawableFromUrl(String url) throws IOException {
+        Bitmap x;
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.connect();
+        InputStream input = connection.getInputStream();
+
+        x = BitmapFactory.decodeStream(input);
+        return new BitmapDrawable(x);
+    }
+
+    private void getImages(final String searchQuery) {
         FindMyWordAPIController controller = new FindMyWordAPIController();
-
         //IMPORTANT
-        String searchQuery = "cat";
-
-        controller.searchImage("cat", new Callback<SearchData>() {
+        controller.searchImage(searchQuery, new Callback<SearchData>() {
 
             //Change these callbacks to add custom logic
             @Override
@@ -44,7 +65,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     Item firstResult = items.get(0);
                     Log.d("api", firstResult.getImage().getContextLink().toString());
+                    String myUrl = firstResult.getImage().getContextLink().toString();
 
+                    int myint;
+                    for (myint =0; myint < categories.length; myint++){
+                        if (categories[myint].equals(searchQuery)){
+                            break;
+                        }
+                    }
+
+                    //InputStream is = (InputStream) this.fetch(myUrl);
+                    //Drawable d = Drawable.createFromStream(is, saveFilename);
+                    try {
+                        Drawable d = drawableFromUrl(myUrl);
+                        buttons[myint].setBackground(d);
+                    } catch (IOException e) {
+                        Log.d(DEBUG_TAG,"Shit Happens");
+                    }
                 } else {
                     Log.d("marc_tag", "failed" + response.errorBody().toString());
                 }
@@ -61,17 +98,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        getImages();
-
+        //getImages();
         WordFinder wordFinder = new WordFinder(this);
-        String categories[] = wordFinder.getNames();
+        categories = wordFinder.getNames();
         int numButtons = categories.length;
         int numRows = numButtons/2;
         int buttonCount = 0;
         LinearLayout layout;
         LinearLayout horizontals[];
-        Button buttons[];
         DisplayMetrics dm = getResources().getDisplayMetrics();
         float dpInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, dm);
 
@@ -86,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         horizontals = new LinearLayout[numRows];
-        buttons = new Button[numButtons];
+        this.buttons = new Button[numButtons];
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dynamic);
@@ -102,11 +136,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 horizontals[i].setOrientation(LinearLayout.HORIZONTAL);
                 horizontals[i].setLayoutParams(linearParams);
                 layout.addView(horizontals[i]);
-                buttons[buttonCount] = new Button(this);
-                buttons[buttonCount].setText(categories[buttonCount]);
-                buttons[buttonCount].setLayoutParams(buttonParams);
-                buttons[buttonCount].setOnClickListener(this);
-                horizontals[i].addView(buttons[buttonCount]);
+                this.buttons[buttonCount] = new Button(this);
+                this.buttons[buttonCount].setText(categories[buttonCount]);
+//                Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(buttonCount));
+//                getImages(categories[buttonCount]);
+                this.buttons[buttonCount].setLayoutParams(buttonParams);
+                this.buttons[buttonCount].setOnClickListener(this);
+                horizontals[i].addView(this.buttons[buttonCount]);
             } else {
                 horizontals[i] = new LinearLayout(this);
                 horizontals[i].setOrientation(LinearLayout.HORIZONTAL);
@@ -119,20 +155,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d(DEBUG_TAG,"Breaking");
                         break;
                     }
-                    buttons[j] = new Button(this);
-                    buttons[j].setText(categories[j]);
-                    buttons[j].setLayoutParams(buttonParams);
-                    buttons[j].setTag(buttons[j].getText());
-                    buttons[j].generateViewId();
-                    buttons[j].setOnClickListener(this);
-                    horizontals[i].addView(buttons[j]);
+                    this.buttons[j] = new Button(this);
+                    this.buttons[j].setText(categories[j]);
+//                    Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(j));
+//                    getImages(categories[j]);
+                    this.buttons[j].setLayoutParams(buttonParams);
+                    this.buttons[j].setTag(this.buttons[j].getText());
+                    this.buttons[j].generateViewId();
+                    this.buttons[j].setOnClickListener(this);
+                    horizontals[i].addView(this.buttons[j]);
                     buttonCount++;
                 }
             }
         }
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -142,11 +178,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(DEBUG_TAG,name);
         intent.putExtra(KEY_NAME,name);
         startActivity(intent);
-//        Intent intent = new Intent(this,SubMenu.class);
-//        Log.d("Filip_debug_tag",((TextView)v.findViewById(v.getId())).getText().toString());
-//        String name = ((TextView) v.findViewById(v.getId())).getText().toString();
-//        intent.putExtra(KEY_NAME,name);
-//        intent.putExtra(WORD_FINDER,(Parcelable) null);
-//        startActivity(intent);
     }
 }
