@@ -34,7 +34,7 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         //this.wf = (WordFinder) getIntent().getExtras().getParcelable(WORD_FINDER);
         if (this.wf == null){
             Log.d(DEBUG_TAG,"NULL WordFinder");
-            this.wf = new WordFinder();
+            this.wf = new WordFinder(this);
             this.wf.setName(category);
         } else {
             Log.d(DEBUG_TAG,this.wf.getName());

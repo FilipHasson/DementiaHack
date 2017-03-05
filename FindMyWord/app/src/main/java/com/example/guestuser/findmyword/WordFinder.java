@@ -18,11 +18,14 @@ public class WordFinder {
     private String name;
     private Category curCategory;
     private ArrayList<Category> categories;
+    private Context context;
 
     //Initialize WordFinder object
-    public WordFinder(){
+    public WordFinder(Context context){
         curCategory = null;
         categories = null;
+        this.context = context;
+        this.getAllCategories();
     }
 
     public WordFinder(Category curCategory){
@@ -44,10 +47,27 @@ public class WordFinder {
     public void selectCategory(String categorySelected){
         for  (Category c: categories){
             if (c.getName().equals(categorySelected)){
+                Category prev = this.curCategory;
                 this.curCategory = c;
+                c.setPrevCategory(prev);
                 this.categories = c.getNextCategories();
             }
         }
+    }
+
+    //Are words being displayed instead of categories
+    public boolean hasWords(){
+        return curCategory.hasWords();
+    }
+
+    //Do more categories exist
+    public boolean hasNextCategories(){
+        return !(curCategory.getNextCategories()== null);
+    }
+
+    //If this is a top-most category
+    public boolean hasPrevCategories(){
+       return !(curCategory.getPrevCategory() == null);
     }
 
     //Go to previous category set
@@ -118,7 +138,7 @@ public class WordFinder {
     }
 
     //get all categories
-    public ArrayList<Category> getAllCategories(Context context){
+    public void getAllCategories(){
         String words[];  //If it's a leaf category, words are stored here
         JSONArray categoriesNext; //Categories following category parsed
         String categoryName;  //Name of current category
@@ -131,15 +151,19 @@ public class WordFinder {
             JSONArray jsonArr = jsonObj.getJSONArray("all");
             Log.d("debug_karol","Got JSON array, length:"+jsonArr.length());
 
+            Log.d("debug_karol","here");
             for (int i=0;i<jsonArr.length();i++){
                 allCategories.add(getCategories(jsonArr.getJSONObject(i)));
+                Log.d("debug_karol","Returned category name:"+allCategories.get(i).getName());
             }
 
-            return allCategories;
+            this.categories = allCategories;
+            this.curCategory = null;
 
         }catch(org.json.JSONException e) {
             Log.d("debug_karol","JSONEXCEPTION");
-            return null;
+            this.curCategory = null;
+            this.categories = null;
         }
     }
 

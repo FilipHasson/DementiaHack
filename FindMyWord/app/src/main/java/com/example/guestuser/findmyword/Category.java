@@ -20,8 +20,8 @@ public class Category {
         prevCategory = null;
     }
 
-    public void setPrevCategories(ArrayList<Category> next){
-        nextCategory = next;
+    public void setPrevCategory(Category prev){
+        prevCategory = prev;
     }
 
     public Category getPrevCategory(){

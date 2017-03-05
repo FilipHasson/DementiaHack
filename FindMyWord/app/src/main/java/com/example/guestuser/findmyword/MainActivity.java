@@ -20,8 +20,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        WordFinder wordFinder = new WordFinder();
-        wordFinder.getAllCategories(this);
+        WordFinder wordFinder = new WordFinder(this);
+
+        String[] words = wordFinder.getNames();
+
+        Log.d("debug_karol","length:"+words.length);
+        for (int i=0;i<words.length;i++){
+            Log.d("debug_karol","name:"+words[i]);
+        }
 
         setContentView(R.layout.activity_main);
         for (int i = 1; i <= numButtons; i++) {
