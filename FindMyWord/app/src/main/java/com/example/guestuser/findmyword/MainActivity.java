@@ -2,7 +2,9 @@ package com.example.guestuser.findmyword;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +13,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final boolean DEBUG_FLAG = false;
     private int numButtons = 8;
     private static final String KEY_NAME = "category";
+    private static final String WORD_FINDER = "word_finder";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this,SubMenu.class);
+        Log.d("Filip_debug_tag",((TextView)v.findViewById(v.getId())).getText().toString());
         String name = ((TextView) v.findViewById(v.getId())).getText().toString();
         intent.putExtra(KEY_NAME,name);
+        intent.putExtra(WORD_FINDER,(Parcelable) null);
         startActivity(intent);
     }
 }
