@@ -40,12 +40,12 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
             Log.d(DEBUG_TAG,this.wf.getName());
         }
 
-        if(wf.hasNextCategories()) {
+        if(this.wf.hasNextCategories()) {
             this.wf.selectCategory(category);
             categories = this.wf.getNames();
-        } else if (wf.hasWords()){
-            //categories = this.wf.getWords(category);
-            categories = this.wf.getNames();
+        } else if (this.wf.hasWords()){
+            categories = this.wf.getWords(category);
+           // categories = this.wf.getNames();
         } else {
             //shit goes crazy
             categories = new String[0];
