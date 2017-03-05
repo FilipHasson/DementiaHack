@@ -36,6 +36,8 @@
                     android:layout_width="0dp"
                     android:layout_height="150dp"
                     android:layout_weight="1"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/food"
                     android:text="@string/foodButton"/>
             </LinearLayout>
             <LinearLayout
