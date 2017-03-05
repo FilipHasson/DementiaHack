@@ -14,8 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.guestuser.findmyword.API.APIDemo;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -44,9 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        APIDemo demo = new APIDemo();
-        demo.searchPhoto("horse");
+        super.onCreate(savedInstanceState);
 
         WordFinder wordFinder = new WordFinder(this);
         categories = wordFinder.getNames();
@@ -87,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout.addView(horizontals[i]);
                 this.buttons[buttonCount] = new Button(this);
                 this.buttons[buttonCount].setText(categories[buttonCount]);
-//                Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(buttonCount));
-//                getImages(categories[buttonCount]);
+                Log.d(DEBUG_TAG,"Attempting to add IMAGE #"+Integer.toString(buttonCount));
                 this.buttons[buttonCount].setLayoutParams(buttonParams);
                 this.buttons[buttonCount].setOnClickListener(this);
                 horizontals[i].addView(this.buttons[buttonCount]);
