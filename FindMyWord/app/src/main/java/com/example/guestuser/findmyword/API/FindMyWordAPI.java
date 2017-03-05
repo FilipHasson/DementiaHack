@@ -24,9 +24,11 @@ public interface FindMyWordAPI {
     @GET("")
     Call<PhotoResult> getPhotos(
         @Query("text") String text,
-        @Query("sort") String sortMethod,
-        @Query("safe_search") String safeSearch,
-        @Query("content_type") String contentType
+        @Query("sort") String sort,
+        @Query("safe_search") String safe_search,
+        @Query("content_type") String content_type,
+        @Query("format") String format,
+        @Query("nojsoncallback") String nojsoncallback
     );
 
 

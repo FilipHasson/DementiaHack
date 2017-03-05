@@ -14,6 +14,28 @@ import retrofit2.Response;
 
 public class APIDemo {
 
+    public void searchImage(String searchQuery) {
+
+        FindMyWordAPIController controller = new FindMyWordAPIController();
+        controller.searchImage(searchQuery, new Callback<SearchData>() {
+            @Override
+            public void onResponse(Call<SearchData> call, Response<SearchData> response) {
+                if (response.isSuccessful()) {
+                    Log.d("marc_tag", "lets go baby");
+                }
+                else {
+                    Log.d("marc_tag", "failed");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchData> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+    }
+
     public void searchWord(String searchQuery) {
 
         FindMyWordAPIController controller = new FindMyWordAPIController();
