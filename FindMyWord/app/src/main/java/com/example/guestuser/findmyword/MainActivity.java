@@ -15,19 +15,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.guestuser.findmyword.API.FindMyWordAPIController;
-import com.example.guestuser.findmyword.API.Item;
-import com.example.guestuser.findmyword.API.SearchData;
+import com.example.guestuser.findmyword.API.APIDemo;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String APP_NAME = "FindMyWord";
@@ -39,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button buttons[];
     String categories[];
 
-    public static Drawable drawableFromUrl(String url) throws IOException {
+      public static Drawable drawableFromUrl(String url) throws IOException {
         Bitmap x;
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -50,56 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return new BitmapDrawable(x);
     }
 
-    private void getImages(final String searchQuery) {
-        FindMyWordAPIController controller = new FindMyWordAPIController();
-        //IMPORTANT
-        controller.searchImage(searchQuery, new Callback<SearchData>() {
-
-            //Change these callbacks to add custom logic
-            @Override
-            public void onResponse(Call<SearchData> call, Response<SearchData> response) {
-                if(response.isSuccessful()) {
-                    Log.d("marc_tag","sweeter sound fam");
-
-                    //Do whatever you want with these items
-                    List<Item> items = response.body().getItems();
-
-                    Item firstResult = items.get(0);
-                    Log.d("api", firstResult.getImage().getContextLink().toString());
-                    String myUrl = firstResult.getImage().getContextLink().toString();
-
-                    int myint;
-                    for (myint =0; myint < categories.length; myint++){
-                        if (categories[myint].equals(searchQuery)){
-                            break;
-                        }
-                    }
-
-                    //InputStream is = (InputStream) this.fetch(myUrl);
-                    //Drawable d = Drawable.createFromStream(is, saveFilename);
-                    try {
-                        Drawable d = drawableFromUrl(myUrl);
-                        buttons[myint].setBackground(d);
-                    } catch (IOException e) {
-                        Log.d(DEBUG_TAG,"Shit Happens");
-                    }
-                } else {
-                    Log.d("marc_tag", "failed" + response.errorBody().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SearchData> call, Throwable t) {
-                Log.d("marc_tag", "call failed");
-                t.printStackTrace();
-            }
-        });
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //getImages();
+
+        APIDemo demo = new APIDemo();
+        demo.searchPhoto("horse");
+
         WordFinder wordFinder = new WordFinder(this);
         categories = wordFinder.getNames();
         int numButtons = categories.length;
