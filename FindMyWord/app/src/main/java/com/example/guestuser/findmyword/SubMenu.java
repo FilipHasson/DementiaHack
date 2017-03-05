@@ -14,7 +14,6 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     private static final String APP_NAME = "FindMyWord";
     private static final String DEBUG_TAG = "Filip_debug_tag";
     private static final boolean DEBUG_FLAG = false;
-    private int numButtons = 7;
     private static final String KEY_NAME = "category";
     private static final String WORD_FINDER = "word_finder";
     private static WordFinder wf;
@@ -22,16 +21,17 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(DEBUG_TAG,"onCreate Launched");
-        int numRows = this.numButtons/2;
-        int cButton = 0;
+        int numButtons;
+        int numRows;// = this.numButtons/2;
+        int buttonCount = 0;
         LinearLayout layout;
         LinearLayout horizontals[];
         Button buttons[];
         DisplayMetrics dm = getResources().getDisplayMetrics();
         float dpInPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, dm);
         String category = getIntent().getStringExtra("category");
-
-        //this.wf = (WordFinder) getIntent().getExtras().getParcelable(WORD_FINDER);
+        String categories[];
+        
         if (this.wf == null){
             Log.d(DEBUG_TAG,"NULL WordFinder");
             this.wf = new WordFinder(this);
@@ -39,6 +39,22 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         } else {
             Log.d(DEBUG_TAG,this.wf.getName());
         }
+
+        if(wf.hasNextCategories()) {
+            this.wf.selectCategory(category);
+            categories = this.wf.getNames();
+        } else if (wf.hasWords()){
+            //categories = this.wf.getWords(category);
+            categories = this.wf.getNames();
+        } else {
+            //shit goes crazy
+            categories = new String[0];
+            categories[0]="THIS SHOULD NEVER HAPPEN!";
+            Log.d(DEBUG_TAG,categories[0]);
+        }
+        numButtons = categories.length;
+        numRows = numButtons/2;
+
         if (numRows%2 != 0){
             numRows++;
         }
@@ -55,38 +71,39 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
         LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        LinearLayout test = new LinearLayout(this);
-        test.setOrientation(LinearLayout.HORIZONTAL);
-        test.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-
         for (int i = 0; i < numRows; i++){
-            //If there is an uneven number of buttons & this is the last row
-            if (this.numButtons%2 != 0 && i == numRows-1){
+            Log.d(DEBUG_TAG,"Creating Row #"+Integer.toString(i));
+            if (numButtons%2 != 0 && i == numRows-1){
                 horizontals[i] = new LinearLayout(this);
                 horizontals[i].setOrientation(LinearLayout.HORIZONTAL);
                 horizontals[i].setLayoutParams(linearParams);
                 layout.addView(horizontals[i]);
-                buttons[cButton] = new Button(this);
-                buttons[cButton].setText(category+"."+Integer.toString(cButton));
-                buttons[cButton].setLayoutParams(buttonParams);
-                buttons[cButton].setOnClickListener(this);
-                horizontals[i].addView(buttons[cButton]);
+                buttons[buttonCount] = new Button(this);
+                buttons[buttonCount].setText(categories[buttonCount]);
+                buttons[buttonCount].setLayoutParams(buttonParams);
+                buttons[buttonCount].setOnClickListener(this);
+                horizontals[i].addView(buttons[buttonCount]);
             } else {
                 horizontals[i] = new LinearLayout(this);
                 horizontals[i].setOrientation(LinearLayout.HORIZONTAL);
                 horizontals[i].setLayoutParams(linearParams);
                 layout.addView(horizontals[i]);
-                for (int j=cButton; j <= cButton+1;j++) {
+                int test = buttonCount+1;
+                for (int j=buttonCount; j <= test ;j++) {
+                    Log.d(DEBUG_TAG,"Attempting to add Button #"+Integer.toString(j));
+                    if (j == numButtons){
+                        Log.d(DEBUG_TAG,"Breaking");
+                        break;
+                    }
                     buttons[j] = new Button(this);
-                    buttons[j].setText(category+"."+Integer.toString(j));
+                    buttons[j].setText(categories[j]);
                     buttons[j].setLayoutParams(buttonParams);
                     buttons[j].setTag(buttons[j].getText());
                     buttons[j].generateViewId();
                     buttons[j].setOnClickListener(this);
                     horizontals[i].addView(buttons[j]);
+                    buttonCount++;
                 }
-                cButton = cButton + 2;
             }
         }
     }
@@ -95,10 +112,8 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         Intent intent = new Intent(this,SubMenu.class);
         Button b = (Button)v;
-        //Log.d("Filip_debug_tag",((TextView)v.findViewById(v.getId())).getText().toString());
         String name = b.getText().toString();
         intent.putExtra(KEY_NAME,name);
-        //intent.putExtra(WORD_FINDER,(Parcelable) this.wf);
         startActivity(intent);
     }
 }
