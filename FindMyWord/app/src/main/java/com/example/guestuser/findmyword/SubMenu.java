@@ -111,8 +111,9 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                 buttons[buttonCount] = new Button(this);
                 buttons[buttonCount].setText(categories[buttonCount]);
                 buttons[buttonCount].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-                buttons[buttonCount].setTextColor(Color.WHITE);
+                buttons[buttonCount].setTextColor(Color.BLACK);
                 buttons[buttonCount].setBackgroundResource(getPictureOrColor(categories[buttonCount]));
+                buttons[buttonCount].getBackground().setAlpha(85);
                 buttons[buttonCount].setLayoutParams(buttonParams);
                 if (!terminal_node) buttons[buttonCount].setOnClickListener(this);
                 horizontals[i].addView(buttons[buttonCount]);
@@ -127,8 +128,9 @@ public class SubMenu extends AppCompatActivity implements View.OnClickListener{
                     buttons[j] = new Button(this);
                     buttons[j].setText(categories[j]);
                     buttons[j].setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
-                    buttons[j].setTextColor(Color.WHITE);
+                    buttons[j].setTextColor(Color.BLACK);
                     buttons[j].setBackgroundResource(getPictureOrColor(categories[buttonCount]));
+                    buttons[j].getBackground().setAlpha(85);
                     buttons[j].setLayoutParams(buttonParams);
                     buttons[j].setTag(buttons[j].getText());
                     buttons[j].generateViewId();
