@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Category {
     private boolean hasWords;
     private String name;
+    private String[] words;
     private ArrayList<Category> nextCategory;
     private Category prevCategory;
 
@@ -35,6 +36,8 @@ public class Category {
         return nextCategory;
     }
 
+    public void setName(String name){ this.name = name; }
+
     public String getName(){
         return this.name;
     }
@@ -42,4 +45,11 @@ public class Category {
     public boolean hasWords(){
         return hasWords;
     }
+
+    public void setWords(String[] words){ this.words = words; hasWords = true; }
+
+    public String[] getWords(){ return this.words; }
+
+
+
 }

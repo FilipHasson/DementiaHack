@@ -19,10 +19,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        WordFinder wordFinder = new WordFinder();
+        wordFinder.getAllCategories(this);
+
         setContentView(R.layout.activity_main);
         for (int i = 1; i <= numButtons; i++) {
             (findViewById(getResources().getIdentifier("Button" + i, "id",this.getPackageName()))).setOnClickListener(this);
         }
+
     }
 
     @Override
